@@ -2,16 +2,23 @@
 const express = require('express');
 const app = express();
 const exphbs = require('express-handlebars');
-const Handlebars = require('handlebars');
+const Handlebars = require('handlebars')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+const bodyParser = require('body-parser');
+const models = require('./db/models');
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
 // Middleware
-app.engine('handlebars', exphbs.engine());
+app.engine('handlebars', exphbs.engine({
+  // Use "main" as our default layout
+  defaultLayout: 'main', 
+  // Allow access views to access using 'this.' keyword because of Handlebar's added security layer
+  handlebars: allowInsecurePrototypeAccess(Handlebars)
+}));
 
-// Use "main" as our default layout
-// app.engine('handlebars', exphbs({ defaultLayout: 'main', handlebars: allowInsecurePrototypeAccess(Handlebars) }));
 // Use handlebars to render
 app.set('view engine', 'handlebars');
 
@@ -22,9 +29,29 @@ var events = [
   { title: "I am your second event", desc: "A great event that is super fun to look at and good", imgUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZXZlbnR8ZW58MHx8MHx8&w=1000&q=80" },
   { title: "I am your third event", desc: "A great event that is super fun to look at and good", imgUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8ZXZlbnR8ZW58MHx8MHx8&w=1000&q=80" }
 ]
+
+// INDEX
 app.get('/', (req, res) => {
-  res.render('events-index', { events: events });
+  models.Event.findAll({ order: [['createdAt', 'DESC']] }).then((events) => {
+    res.render('events-index', { events: events });
+  })
 })
+
+app.get('/events/new', (req, res) => {
+  res.render('events-new', {});
+})
+
+// CREATE
+app.post('/events', (req, res) => {
+  models.Event.create(req.body).then((event) => {
+    res.redirect(`/`);
+  }).catch((err) => {
+    console.log(err);
+  });
+})
+
+
+
 
 // Choose a port to listen on
 const port = process.env.PORT || 3000;
