@@ -3,9 +3,13 @@
 <div class="row mt-4">
   <div class="col-lg-6 offset-lg-3">
     <img class="img-fluid w-100 rounded mb-3" src="{{event.imgUrl}}" alt="Card image cap">
+    <small class="text-muted">Created on: {{event.createdAtFormatted}}</small>
     <h3>{{event.title}}</h3>
     <div class="lead">{{event.desc}}</div>
-    <p>Event date: {{event.eventDate}}</p>
+    <p>Event date: {{event.eventDateFormatted}}</p>
+    <div class="text-right">
+      <a href="/events/{{event.id}}/edit">Edit</a>
+    </div>
   </div>
 
   <div class="col-lg-4 offset-lg-1">
@@ -13,7 +17,6 @@
         <b>RSVPs ({{event.Rsvps.length}})</b>
         <a href="/events/{{event.id}}/rsvps/new" class="btn btn-primary btn-sm">RSVP</a>
     </div>
-
     <div class="list-group mt-4">
       {{#each event.Rsvps}}
         <div class="list-group-item clearfix">
@@ -32,6 +35,4 @@
 
 </div>
 
-<div class="text-right">
-  <a href="/events/{{event.id}}/edit">Edit</a>
-</div>
+

@@ -1,9 +1,15 @@
 // events.js
+const moment = require('moment');
 
 module.exports = function (app, models) {
   // INDEX
   app.get('/', (req, res) => {
     models.Event.findAll({ order: [['createdAt', 'DESC']] }).then((events) => {
+      events.forEach((event) => {
+        let eventDate = event.eventDate;
+        eventDate = moment(eventDate).format('MMMM Do YYYY, h:mm a');
+        event.eventDateFormatted = eventDate;
+      })
       res.render('events-index', { events: events });
     })
   })
@@ -26,6 +32,13 @@ module.exports = function (app, models) {
   app.get('/events/:id', (req, res) => {
     // Search for the event by its id that was passed in via req.params
     models.Event.findByPk(req.params.id, { include: [{ model: models.Rsvp }] }).then((event) => {
+      let createdAt = event.createdAt;
+      createdAt = moment(createdAt).format('MMMM Do YYYY, h:mm:ss a');
+      event.createdAtFormatted = createdAt;
+
+      let eventDate = event.eventDate;
+      eventDate = moment(eventDate).format('MMMM Do YYYY, h:mm a');
+      event.eventDateFormatted = eventDate;
       // If the id is for a valid event, show it
       res.render('events-show', { event: event })
     }).catch((err) => {
