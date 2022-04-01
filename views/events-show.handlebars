@@ -15,11 +15,18 @@
     </div>
 
     <div class="list-group mt-4">
-        {{#each event.Rsvps}}
-        <div class="list-group-item">
+      {{#each event.Rsvps}}
+        <div class="list-group-item clearfix">
+          <div class="float-left">
             {{this.name}}
+          </div>
+          <div class="float-right">
+            <form class="form-inline" action="/events/{{../event.id}}/rsvps/{{this.id}}?_method=DELETE" method="post">
+              <button type="submit" class="btn btn-link btn-sm">Remove</button>
+            </form>
+          </div>
         </div>
-        {{/each}}
+      {{/each}}
     </div>
   </div>
 
