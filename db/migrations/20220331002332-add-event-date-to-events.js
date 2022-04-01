@@ -2,7 +2,7 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.addColumn('Events', 'eventDate', { type: Sequelize.DATE });
+    return queryInterface.addColumn('Events', 'eventDate', { type: Sequelize.DATEONLY });
   },
 
   async down (queryInterface, Sequelize) {
