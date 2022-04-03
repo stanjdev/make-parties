@@ -10,6 +10,7 @@ module.exports = function (app, models) {
         eventDate = moment(eventDate).format('MMMM Do YYYY, h:mm a');
         event.eventDateFormatted = eventDate;
       })
+      console.log("logged in user:", req.user)
       res.render('events-index', { events: events });
     })
   })
