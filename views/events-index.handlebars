@@ -2,7 +2,9 @@
 <div class="row mt-4" >
   <div class="col-lg-6 offset-lg-3">
     <h1>Events</h1>
-    <a href="/events/new">Create New Event</a>
+    {{#if currentUser}}
+      <a href="/events/new">Create New Event</a>
+    {{/if}}
     {{#each events}}
       <div class="card">
         <img class="img-fluid" src="{{this.imgUrl}}" alt="Card image cap">
@@ -10,7 +12,9 @@
         <p>{{this.desc}}</p>
         <p>Takes place on: {{this.eventDateFormatted}}</p>
         <div>
+        {{!-- {{#if currentUser}} --}}
           <a href="/events/{{this.id}}/rsvps/new" class="btn btn-info">Rsvp</a>
+        {{!-- {{/if}} --}}
           <a href="/events/{{this.id}}"  class="btn btn-primary">View</a>
         </div>
       </div>

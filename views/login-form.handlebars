@@ -1,6 +1,15 @@
 <!-- views/login-form.handlebars -->
 <form method="POST" action="/login">
   <legend>Login</legend>
+  {{#if sessionFlash}}
+    {{#if sessionFlash.message}}
+    <div class="alert fade show alert-dismissible alert-{{sessionFlash.type}}">
+      {{sessionFlash.message}}
+      <button.close(type='button', data-dismiss='alert', aria-label='Close')      
+      <span (aria-hidden='true')>x</span>
+    </div>
+    {{/if}}
+  {{/if}}
   {{> email-pw }}
   <div class="text-right">
     <a href="/" class='text-muted mr-2'>Go Back</a>

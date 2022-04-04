@@ -23,6 +23,7 @@ module.exports = function (app, models) {
   // CREATE
   app.post('/events', (req, res) => {
     models.Event.create(req.body).then((event) => {
+      event.setUser(res.locals.currentUser)
       res.redirect(`/events/${event.id}`);
     }).catch((err) => {
       console.log(err);

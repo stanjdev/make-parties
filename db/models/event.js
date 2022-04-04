@@ -12,13 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Event.hasMany(models.Rsvp);
+      Event.belongsTo(models.User);
     }
   }
   Event.init({
     title: DataTypes.STRING,
     desc: DataTypes.TEXT,
     imgUrl: DataTypes.STRING,
-    eventDate: DataTypes.DATEONLY
+    eventDate: DataTypes.DATEONLY,
   }, {
     sequelize,
     modelName: 'Event',

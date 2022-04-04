@@ -18,7 +18,7 @@ module.exports = function(app, models) {
       const mpJWT = generateJWT(user);
       // save as cookie
       res.cookie("mpJWT", mpJWT);
-      console.log('user created!!!', user)
+      // console.log('user created!!!', user)
       // redirect to the root route
       res.redirect("/");
     }).catch((err) => {
@@ -64,5 +64,9 @@ module.exports = function(app, models) {
     // req.session.sessionFlash = { type: 'success', message: 'Successfully logged out!' }
     // comment the above line in once you have error messaging setup (step 15 below)
     return res.redirect('/');
+  })
+
+  app.get('/me', (req, res) => {
+    res.render('me');
   })
 };

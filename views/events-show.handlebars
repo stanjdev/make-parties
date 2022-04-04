@@ -8,14 +8,18 @@
     <div class="lead">{{event.desc}}</div>
     <p>Event date: {{event.eventDateFormatted}}</p>
     <div class="text-right">
+      {{#if currentUser}}
       <a href="/events/{{event.id}}/edit">Edit</a>
+      {{/if}}
     </div>
   </div>
 
   <div class="col-lg-4 offset-lg-1">
      <div class="d-flex justify-content-between">
         <b>RSVPs ({{event.Rsvps.length}})</b>
+        {{#if currentUser}}
         <a href="/events/{{event.id}}/rsvps/new" class="btn btn-primary btn-sm">RSVP</a>
+        {{/if}}
     </div>
     <div class="list-group mt-4">
       {{#each event.Rsvps}}
@@ -25,7 +29,9 @@
           </div>
           <div class="float-right">
             <form class="form-inline" action="/events/{{../event.id}}/rsvps/{{this.id}}?_method=DELETE" method="post">
+              {{!-- {{#if currentUser}} --}}
               <button type="submit" class="btn btn-link btn-sm">Remove</button>
+              {{!-- {{/if}} --}}
             </form>
           </div>
         </div>

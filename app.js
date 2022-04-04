@@ -51,6 +51,7 @@ app.use((req, res, next) => {
     models.User.findByPk(req.user.id).then((currentUser) => {
       // make the user object available in all controllers and templates
       res.locals.currentUser = currentUser;
+      console.log("currentUser", res.locals.currentUser)
       next();
     }).catch((err) => {
       console.log(err);
