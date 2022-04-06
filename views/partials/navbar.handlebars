@@ -4,14 +4,14 @@
 
   <div class="">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home</a>
+      <li class="nav-item active d-flex justify-content-around">
+        <a class="nav-link ml-3 mr-3" href="/">Home</a>
         {{#if currentUser}}
-          <a class="nav-link" href="/me">My Profile</a>
-          <a class="nav-link" href="/logout">Logout</a>
+          <a class="nav-link ml-3 mr-3" href="/me">My Profile</a>
+          <a class="nav-link ml-3 mr-3" href="/logout">Logout</a>
         {{else}}
-          <a class="nav-link" href="/sign-up">Sign Up</a>
-          <a class="nav-link" href="/login">Login</a>
+          <a class="nav-link ml-3 mr-3" href="/sign-up">Sign Up</a>
+          <a class="nav-link ml-3 mr-3" href="/login">Login</a>
         {{/if}}
       </li>
     </ul>

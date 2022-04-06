@@ -1,6 +1,17 @@
 <!-- events-index -->
 <div class="row mt-4" >
   <div class="col-lg-6 offset-lg-3">
+
+    {{#if sessionFlash}}
+      {{#if sessionFlash.message}}
+      <div class="alert fade show alert-dismissible alert-{{sessionFlash.type}}">
+        {{sessionFlash.message}}
+        <button.close(type='button', data-dismiss='alert', aria-label='Close')      
+        <span (aria-hidden='true') style="position: absolute; right: 15px; padding: 0 10px;">X</span>
+      </div>
+      {{/if}}
+    {{/if}}
+
     <h1>Events</h1>
     {{#if currentUser}}
       <a href="/events/new">Create New Event</a>

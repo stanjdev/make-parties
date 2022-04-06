@@ -11,7 +11,7 @@ module.exports = function (app, models) {
         event.eventDateFormatted = eventDate;
       })
       console.log("logged in user:", req.user)
-      res.render('events-index', { events: events });
+      res.render('events-index', { events: events, expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
     })
   })
 
@@ -19,14 +19,16 @@ module.exports = function (app, models) {
   app.get('/events/new', (req, res) => {
     res.render('events-new', {});
   })
-
+  
   // CREATE
   app.post('/events', (req, res) => {
     models.Event.create(req.body).then((event) => {
       event.setUser(res.locals.currentUser)
       res.redirect(`/events/${event.id}`);
     }).catch((err) => {
+      req.session.sessionFlash = { type: 'warning', message: 'Cannot create an empty event' };
       console.log(err);
+      res.redirect(`/events/new`);
     });
   })
 

@@ -9,11 +9,33 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const models = require('./db/models');
 const jwt = require('jsonwebtoken');
+const session = require('express-session');
+const flash = require('express-flash');
 
 // override with POST having ?_method=DELETE or ?_method=PUT
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+
+const sessionStore = new session.MemoryStore;
+const expiryDate = new Date(Date.now() + 60 * 60 * 1000 * 24 * 60) // 60 days
+
+app.use(cookieParser("SECRET"));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  cookie: {expires: expiryDate},
+  store: sessionStore,
+  resave: false
+}));
+app.use(flash());
+
+// Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
+app.use(function(req, res, next){
+  // if there's a flash message in the session request, make it available in the response, then delete it
+  res.locals.sessionFlash = req.session.sessionFlash;
+  delete req.session.sessionFlash;
+  next();
+});
+
 
 app.use(express.static('public'));
 
@@ -60,6 +82,7 @@ app.use((req, res, next) => {
     next();
   }
 });
+
 
 // Use handlebars to render
 app.set('view engine', 'handlebars');

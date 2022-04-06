@@ -18,8 +18,8 @@ module.exports = function(app, models) {
       const mpJWT = generateJWT(user);
       // save as cookie
       res.cookie("mpJWT", mpJWT);
-      // console.log('user created!!!', user)
       // redirect to the root route
+      req.session.sessionFlash = { type: 'success', message: 'Created new account!' }
       res.redirect("/");
     }).catch((err) => {
       console.log(err);
@@ -41,18 +41,21 @@ module.exports = function(app, models) {
         // if not match, send back to login
         console.log("login pw:", req.body.password)
         if (!isMatch) {
-          console.log('mismatch!!!')
+          console.log('mismatch!!!');
+          req.session.sessionFlash = { type: 'danger', message: 'Incorrect email or password.' }
           return res.redirect('/login');
         }
         // if it is match, generate JWT
         const mpJWT = generateJWT(user);
         // save jwt as cookie
         res.cookie("mpJWT", mpJWT);
+        req.session.sessionFlash = { type: 'success', message: 'Successfully logged in!' }
         res.redirect('/');
       })
     }).catch((err) => {
       // if can't find user, return to login
       console.log("LOGIN ERRORR", err)
+      req.session.sessionFlash = { type: 'danger', message: 'Incorrect email or password.' }
       return res.redirect('/login');
     });
   });
@@ -61,12 +64,15 @@ module.exports = function(app, models) {
   app.get('/logout', (req, res, next) => {
     res.clearCookie('mpJWT');
 
-    // req.session.sessionFlash = { type: 'success', message: 'Successfully logged out!' }
+    req.session.sessionFlash = { type: 'success', message: 'Successfully logged out!' }
     // comment the above line in once you have error messaging setup (step 15 below)
-    return res.redirect('/');
+    return res.redirect('/login');
+    // return res.redirect('/');
   })
 
   app.get('/me', (req, res) => {
+    let currentUser = res.locals.currentUser;
+    // models.Event.findAll({ where: {userId: currentUser.id} })
     res.render('me');
   })
 };
